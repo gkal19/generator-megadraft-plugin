@@ -5,13 +5,13 @@
  */
 
 "use strict";
-var yeoman = require("yeoman-generator");
-var chalk = require("chalk");
-var yosay = require("yosay");
-var _ = require("lodash");
+const yeoman = require("yeoman-generator");
+const chalk = require("chalk");
+const yosay = require("yosay");
+const _ = require("lodash");
 
 function ensureHttpPrefix(url) {
-  var valid = url.startsWith("http://") || url.startsWith("https://");
+  const valid = url.startsWith("http://") || url.startsWith("https://");
   if (!valid) {
     return "Please input a valid URL. Protocol missing.";
   }
@@ -30,7 +30,7 @@ module.exports = yeoman.Base.extend({
       "Welcome to the beautiful " + chalk.red("megadraft-plugin") + " generator!"
     ));
 
-    var prompts = [
+    const prompts = [
       {
         type: "input",
         name: "pluginName",
@@ -42,7 +42,7 @@ module.exports = yeoman.Base.extend({
         type: "input",
         name: "packageName",
         message: "What's the package name?",
-        default: function (props) {
+        default(props) {
           return _.kebabCase(props.pluginName);
         },
         validate: isRequired
@@ -80,7 +80,7 @@ module.exports = yeoman.Base.extend({
         name: "issuesURL",
         message: "What's the issues URL?",
         validate: ensureHttpPrefix,
-        default: function (props) {
+        default(props) {
           return (props.homepage.replace(/\/$/, "") + "/issues");
         }
       }
@@ -92,19 +92,19 @@ module.exports = yeoman.Base.extend({
     }.bind(this));
   },
 
-  writing: function () {
-    var copyrightHolder = this.inputs.authorName;
+  writing() {
+    let copyrightHolder = this.inputs.authorName;
     if (this.inputs.authorEmail) {
-      copyrightHolder += " <" + this.inputs.authorEmail + ">";
+      copyrightHolder += ` <${this.inputs.authorEmail}>`;
     } else {
-      copyrightHolder += " (" + this.inputs.homepage + ")";
+      copyrightHolder += ` (${this.inputs.homepage})`;
     }
-    var today = new Date();
-    var context = {
+    const today = new Date();
+    const context = {
       inputs: this.inputs,
       info: {
         year: today.getFullYear(),
-        copyrightHolder: copyrightHolder
+        copyrightHolder
       }
     };
     this.fs.copyTpl(
@@ -126,7 +126,7 @@ module.exports = yeoman.Base.extend({
     );
   },
 
-  install: function () {
+  install() {
     this.installDependencies();
   }
 });
